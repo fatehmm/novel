@@ -1,3 +1,4 @@
+import { Node } from "@tiptap/core";
 import {
   AIHighlight,
   CharacterCount,
@@ -28,6 +29,26 @@ const tiptapLink = TiptapLink.configure({
     class: cx(
       "text-muted-foreground underline underline-offset-[3px] hover:text-primary transition-colors cursor-pointer",
     ),
+  },
+});
+
+const Divider = Node.create({
+  name: "divider",
+  addNodeView() {
+    return ({
+      editor,
+      node,
+      getPos,
+      HTMLAttributes,
+      decorations,
+      extension,
+    }) => {
+      const dom = document.createElement("hr");
+
+      return {
+        dom,
+      };
+    };
   },
 });
 
@@ -93,7 +114,9 @@ const starterKit = StarterKit.configure({
   },
   codeBlock: {
     HTMLAttributes: {
-      class: cx("rounded-md bg-muted text-muted-foreground border p-5 font-mono font-medium"),
+      class: cx(
+        "rounded-md bg-muted text-muted-foreground border p-5 font-mono font-medium",
+      ),
     },
   },
   code: {
@@ -132,7 +155,7 @@ const twitter = Twitter.configure({
 
 const characterCount = CharacterCount.configure();
 
-export const defaultExtensions = [
+export const defaultExtensions: any = [
   starterKit,
   placeholder,
   tiptapLink,

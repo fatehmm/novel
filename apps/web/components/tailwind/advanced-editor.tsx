@@ -1,4 +1,3 @@
-"use client";
 import { defaultEditorContent } from "@/lib/content";
 import {
   EditorCommand,
@@ -20,29 +19,34 @@ import { NodeSelector } from "./selectors/node-selector";
 import { Separator } from "./ui/separator";
 
 import { handleImageDrop, handleImagePaste } from "novel/plugins";
+import { AISelector } from "./generative/ai-selector";
 import GenerativeMenuSwitch from "./generative/generative-menu-switch";
 import { uploadFn } from "./image-upload";
 import { TextButtons } from "./selectors/text-buttons";
 import { slashCommand, suggestionItems } from "./slash-command";
+import Magic from "./ui/icons/magic";
 
-const hljs = require('highlight.js');
+const hljs = require("highlight.js");
 
 const extensions = [...defaultExtensions, slashCommand];
 
 const TailwindAdvancedEditor = () => {
-  const [initialContent, setInitialContent] = useState<null | JSONContent>(null);
+  const [initialContent, setInitialContent] = useState<null | JSONContent>(
+    null,
+  );
   const [saveStatus, setSaveStatus] = useState("Saved");
   const [charsCount, setCharsCount] = useState();
 
   const [openNode, setOpenNode] = useState(false);
   const [openColor, setOpenColor] = useState(false);
   const [openLink, setOpenLink] = useState(false);
+  const [open, onOpenChange] = useState(false);
   const [openAI, setOpenAI] = useState(false);
 
   //Apply Codeblock Highlighting on the HTML from editor.getHTML()
   const highlightCodeblocks = (content: string) => {
-    const doc = new DOMParser().parseFromString(content, 'text/html');
-    doc.querySelectorAll('pre code').forEach((el) => {
+    const doc = new DOMParser().parseFromString(content, "text/html");
+    doc.querySelectorAll("pre code").forEach((el) => {
       // @ts-ignore
       // https://highlightjs.readthedocs.io/en/latest/api.html?highlight=highlightElement#highlightelement
       hljs.highlightElement(el);
@@ -50,14 +54,23 @@ const TailwindAdvancedEditor = () => {
     return new XMLSerializer().serializeToString(doc);
   };
 
-  const debouncedUpdates = useDebouncedCallback(async (editor: EditorInstance) => {
-    const json = editor.getJSON();
-    setCharsCount(editor.storage.characterCount.words());
-    window.localStorage.setItem("html-content", highlightCodeblocks(editor.getHTML()));
-    window.localStorage.setItem("novel-content", JSON.stringify(json));
-    window.localStorage.setItem("markdown", editor.storage.markdown.getMarkdown());
-    setSaveStatus("Saved");
-  }, 500);
+  const debouncedUpdates = useDebouncedCallback(
+    async (editor: EditorInstance) => {
+      const json = editor.getJSON();
+      setCharsCount(editor.storage.characterCount.words());
+      window.localStorage.setItem(
+        "html-content",
+        highlightCodeblocks(editor.getHTML()),
+      );
+      window.localStorage.setItem("novel-content", JSON.stringify(json));
+      window.localStorage.setItem(
+        "markdown",
+        editor.storage.markdown.getMarkdown(),
+      );
+      setSaveStatus("Saved");
+    },
+    500,
+  );
 
   useEffect(() => {
     const content = window.localStorage.getItem("novel-content");
@@ -70,8 +83,16 @@ const TailwindAdvancedEditor = () => {
   return (
     <div className="relative w-full max-w-screen-lg">
       <div className="flex absolute right-5 top-5 z-10 mb-5 gap-2">
-        <div className="rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">{saveStatus}</div>
-        <div className={charsCount ? "rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground" : "hidden"}>
+        <div className="rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">
+          {saveStatus}
+        </div>
+        <div
+          className={
+            charsCount
+              ? "rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground"
+              : "hidden"
+          }
+        >
           {charsCount} Words
         </div>
       </div>
@@ -84,8 +105,10 @@ const TailwindAdvancedEditor = () => {
             handleDOMEvents: {
               keydown: (_view, event) => handleCommandNavigation(event),
             },
-            handlePaste: (view, event) => handleImagePaste(view, event, uploadFn),
-            handleDrop: (view, event, _slice, moved) => handleImageDrop(view, event, moved, uploadFn),
+            handlePaste: (view, event) =>
+              handleImagePaste(view, event, uploadFn),
+            handleDrop: (view, event, _slice, moved) =>
+              handleImageDrop(view, event, moved, uploadFn),
             attributes: {
               class:
                 "prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full",
@@ -98,24 +121,73 @@ const TailwindAdvancedEditor = () => {
           slotAfter={<ImageResizer />}
         >
           <EditorCommand className="z-50 h-auto max-h-[330px] overflow-y-auto rounded-md border border-muted bg-background px-1 py-2 shadow-md transition-all">
-            <EditorCommandEmpty className="px-2 text-muted-foreground">No results</EditorCommandEmpty>
+            <EditorCommandEmpty className="px-2 text-muted-foreground">
+              No results
+            </EditorCommandEmpty>
             <EditorCommandList>
-              {suggestionItems.map((item) => (
-                <EditorCommandItem
-                  value={item.title}
-                  onCommand={(val) => item.command(val)}
-                  className="flex w-full items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent"
-                  key={item.title}
-                >
+              <EditorCommandItem
+                value={"Ask AI"}
+                onKeyDown={(e) => {
+                  e.key === "Escape" && setOpenAI(false);
+                }}
+                onCommand={({ editor, range }) => {
+                  setOpenAI(true);
+                }}
+                className="flex w-full items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent"
+                key={"Ask AI"}
+              >
+                <>
+                  {!openAI && (
+                    <>
+                      <div className="flex h-10 w-10 items-center justify-center rounded-md border border-muted bg-background">
+                        <Magic className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <p className="font-medium">AI Writer</p>
+                      </div>
+                    </>
+                  )}
+                  {openAI && (
+                    <AISelector open={openAI} onOpenChange={setOpenAI} />
+                  )}
+                </>
+              </EditorCommandItem>
+              {/* <EditorCommandItem
+                value={"Button"}
+                onCommand={({ editor, range }) => {
+                  editor.chain().focus().deleteRange(range).run();
+                  const button = document.createElement("button");
+                  button.innerHTML = "Click me";
+                  button.className = "bg-blue-500 text-white px-4 py-2 rounded";
+                }}
+                className="flex w-full items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent"
+                key={"Button"}
+              >
+                <>
                   <div className="flex h-10 w-10 items-center justify-center rounded-md border border-muted bg-background">
-                    {item.icon}
+                    <Magic className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="font-medium">{item.title}</p>
-                    <p className="text-xs text-muted-foreground">{item.description}</p>
+                    <p className="font-medium">Button</p>
                   </div>
-                </EditorCommandItem>
-              ))}
+                </>
+              </EditorCommandItem> */}
+              {!openAI &&
+                suggestionItems.map((item) => (
+                  <EditorCommandItem
+                    value={item.title}
+                    onCommand={(val) => item.command(val)}
+                    className="flex w-full items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent"
+                    key={item.title}
+                  >
+                    <div className="flex h-10 w-10 items-center justify-center rounded-md border border-muted bg-background">
+                      {item.icon}
+                    </div>
+                    <div>
+                      <p className="font-medium">{item.title}</p>
+                    </div>
+                  </EditorCommandItem>
+                ))}
             </EditorCommandList>
           </EditorCommand>
 

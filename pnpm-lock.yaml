@@ -50,6 +50,9 @@ importers:
       '@tailwindcss/typography':
         specifier: ^0.5.10
         version: 0.5.10(tailwindcss@3.4.1)
+      '@tiptap/core':
+        specifier: ^2.1.7
+        version: 2.2.2(@tiptap/pm@2.2.2)
       '@upstash/ratelimit':
         specifier: ^0.4.3
         version: 0.4.4
@@ -96,8 +99,8 @@ importers:
         specifier: ^0.2.1
         version: 0.2.1(next@14.1.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       novel:
-        specifier: workspace:^
-        version: link:../../packages/headless
+        specifier: ^0.4.3
+        version: 0.4.3(@tiptap/extension-code-block@2.2.2(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))(@tiptap/pm@2.2.2))(@types/react@18.2.55)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       openai:
         specifier: ^4.27.0
         version: 4.28.0
@@ -2856,6 +2859,12 @@ packages:
   normalize-range@0.1.2:
     resolution: {integrity: sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA==}
     engines: {node: '>=0.10.0'}
+
+  novel@0.4.3:
+    resolution: {integrity: sha512-3a4Zt3GvpklMqpMZJlGJDwNRt188t8p/WYwDNdn3nKmQGM6U8Maq04ZL3MRVNm9K9OgAEIf1Dax0ki5wBWm15w==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
 
   npm-run-path@4.0.1:
     resolution: {integrity: sha512-S48WzZW777zhNIrn7gxOlISNAqi9ZC/uQFnRdbeIHhZhCA6UqpkOT8T1G7BvfdgP4Er8gF4sUbaS0i7QvIfCWw==}
@@ -6830,6 +6839,45 @@ snapshots:
   normalize-path@3.0.0: {}
 
   normalize-range@0.1.2: {}
+
+  novel@0.4.3(@tiptap/extension-code-block@2.2.2(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))(@tiptap/pm@2.2.2))(@types/react@18.2.55)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+    dependencies:
+      '@radix-ui/react-slot': 1.0.2(@types/react@18.2.55)(react@18.2.0)
+      '@tiptap/core': 2.2.2(@tiptap/pm@2.2.2)
+      '@tiptap/extension-character-count': 2.4.0(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))(@tiptap/pm@2.2.2)
+      '@tiptap/extension-code-block-lowlight': 2.2.6(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))(@tiptap/extension-code-block@2.2.2(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))(@tiptap/pm@2.2.2))(@tiptap/pm@2.2.2)
+      '@tiptap/extension-color': 2.2.2(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))(@tiptap/extension-text-style@2.2.2(@tiptap/core@2.2.2(@tiptap/pm@2.2.2)))
+      '@tiptap/extension-highlight': 2.2.2(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))
+      '@tiptap/extension-horizontal-rule': 2.2.2(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))(@tiptap/pm@2.2.2)
+      '@tiptap/extension-image': 2.2.2(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))
+      '@tiptap/extension-link': 2.2.2(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))(@tiptap/pm@2.2.2)
+      '@tiptap/extension-placeholder': 2.0.3(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))(@tiptap/pm@2.2.2)
+      '@tiptap/extension-task-item': 2.2.2(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))(@tiptap/pm@2.2.2)
+      '@tiptap/extension-task-list': 2.2.2(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))
+      '@tiptap/extension-text-style': 2.2.2(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))
+      '@tiptap/extension-underline': 2.2.2(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))
+      '@tiptap/extension-youtube': 2.4.0(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))
+      '@tiptap/pm': 2.2.2
+      '@tiptap/react': 2.2.2(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))(@tiptap/pm@2.2.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@tiptap/starter-kit': 2.2.2(@tiptap/pm@2.2.2)
+      '@tiptap/suggestion': 2.2.2(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))(@tiptap/pm@2.2.2)
+      '@types/node': 18.15.3
+      cmdk: 0.2.1(@types/react@18.2.55)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      jotai: 2.6.4(@types/react@18.2.55)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-markdown: 8.0.7(@types/react@18.2.55)(react@18.2.0)
+      react-moveable: 0.56.0
+      react-tweet: 3.2.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      tippy.js: 6.3.7
+      tiptap-extension-global-drag-handle: 0.1.7
+      tiptap-markdown: 0.8.9(@tiptap/core@2.2.2(@tiptap/pm@2.2.2))
+      tunnel-rat: 0.1.2(@types/react@18.2.55)(react@18.2.0)
+    transitivePeerDependencies:
+      - '@tiptap/extension-code-block'
+      - '@types/react'
+      - immer
+      - supports-color
 
   npm-run-path@4.0.1:
     dependencies:

@@ -4,7 +4,7 @@ export const defaultEditorContent = {
     {
       type: "heading",
       attrs: { level: 2 },
-      content: [{ type: "text", text: "Introducing Novel" }],
+      content: [{ type: "text", text: "Introducing s" }],
     },
     {
       type: "paragraph",
@@ -86,6 +86,7 @@ export const defaultEditorContent = {
       attrs: { level: 3 },
       content: [{ type: "text", text: "Features" }],
     },
+    { type: "horizontalRule" },
     {
       type: "orderedList",
       attrs: { tight: true, start: 1 },
@@ -96,6 +97,22 @@ export const defaultEditorContent = {
             {
               type: "paragraph",
               content: [{ type: "text", text: "Slash menu & bubble menu" }],
+            },
+          ],
+        },
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                { type: "text", text: "AI autocomplete (type " },
+                { type: "text", marks: [{ type: "code" }], text: "++" },
+                {
+                  type: "text",
+                  text: " to activate, or select from slash menu)",
+                },
+              ],
             },
           ],
         },
@@ -162,6 +179,9 @@ export const defaultEditorContent = {
       },
     },
     { type: "horizontalRule" },
+    { type: "horizontalRule" },
+    { type: "horizontalRule" },
+
     {
       type: "heading",
       attrs: { level: 3 },
@@ -195,6 +215,7 @@ export const defaultEditorContent = {
             },
           ],
         },
+        { type: "horizontalRule" },
         {
           type: "taskItem",
           attrs: { checked: false },
